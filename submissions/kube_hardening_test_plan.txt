@@ -1,0 +1,12 @@
+Before we start with the testing of the changes we need to closely review Kube-bench findings and threat model any implications. We can use the Rancher Benchmark Assessment pdf and go thought our thread model (STRIDE) to reason through the findings. We need to pay special attention how the risk can be realized versus just trying to address findings
+
+
+How will you test the changes? 
+We will first need to think through the implications of the change. This will need to be closely coordinated with other teams and tested in a non-production environment (for example staging)
+
+We then create a non-production cluster representative of the production cluster. A technique that can be used in conjunction is canary testing, where we split some production traffic to the staging (non-production) environment and then test there
+
+How will you ensure the changes don't negatively affect your cluster? 
+
+We should closely monitor metrics by using observabilty and monitoring techniques using tools like Prometheus (for scraping) and Grafana (for displaying) after the change has been applied and make sure to closely monitor for regressions to ensure the stability of the cluster.
+

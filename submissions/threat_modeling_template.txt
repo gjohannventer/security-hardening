@@ -1,0 +1,66 @@
+Question 1:
+
+Concrete attack surface areas for the Docker.
+
+These are the attack surfaces of Docker
+
+- Docker Client
+- Docker Host
+- Docker Registry
+
+I will be showcasing the things that could go wrong on each attack surface and a STRIDE model for each 
+	- Docker Client
+		* Client compromise: the Docker desktop running on the administrator's machine
+		* Client authorization abuse: abuse of the client's authorization to make privileged changes
+		* Dockerfile misconfiguration: how the Dockerfile is built
+	
+		- STRIDE model:
+			* Spoofing - Client traffic from the Docker client to the Docker daemon or registry could be spoofed, or intercepted by a malicious party and replayed. Transport Layer Security (TLS) can be implemented to secure communication affecting the client.
+			* Denial of Service - Excessive traffic from the client could overwhelm the daemon (often on the same machine) and could cause it to crash, leading to a client compromise.
+
+	- Docker Host
+		* Isolation tampering: we are very concerned with namespace isolation to prevent container escape attacks
+		* Use of --privilege flag
+		* Insecure defaults
+		* Misconfiguration
+	 
+	 	- STRIDE model:
+	  		Tampering - Daemon configuration may be tampered with by a compromised client, leading to misconfiguration.
+
+	- Docker Registry - the largest attack surface
+		* Image security
+		* Open Source Software (OSS) security
+		* Docker registry security
+	
+		- STRIDE model:
+			Elevation of Privilege - Container image permissions may be elevated using the --privilege flag. Image libraries may contain security flaws. This can affect image security.
+Question 2:
+Concrete attack surface areas for the Kubernetes
+
+These are the attack surfaces of Kubernetes
+- Control plane - This is the lifeline of the Kubernetes API running many services. Internet access to both control planes and nodes should not be allowed to ensure your clusters are private.
+- Node runtime - This is the node runtime components including kube-proxy and kubelet on the worker node.
+- Cloud provider - This allows you to link your cluster into your cloud provider's API, and separates out the components that interact with that cloud platform from components that just interact     		with your cluster.
+
+- Control plane using the STRIDE model
+	* Tampering - The configuration of etcd may be tampered with by an attacker, modifying vital system-level configurations such as pod specs. This can be mitigated by restricting permissions on etcd files to 644 or more restrictive and that the pod spec file is set to root ownership.
+- Node runtime using the STRIDE model:
+	* Spoofing: Kubernetes ships with insecure defaults, for example, all pods have CAP_NET_RAW permissions. This allows all pods to open raw sockets and inject malicious packets into the Kubernetes  container network, which may lead to spoofing.
+	* Repudiation: Kubernetes natively doesn't allow certificate revocation, which may lead to repudiation if a certificate cannot be revoked when necessary.
+	* Denial of Service: Kubernetes ships without an upper limit for setting the memory footprint. This may lead to a denial of service which could result in exhausting resources needed to run the pod.
+
+
+
+Cloud provider wasn't really covered in the lessons so I will be using the other  attack surfaces
+
+- Docker-bench Run Results and Analysis
+	From the failed findings, select and document 3 findings from the Docker-bench results that you want to harden based on the 5 attack surface areas you identified in Step 1. At least 1 of the 3 hardened findings should be different from the ones mentioned in the exercise (i.e. 5.10, 5.14, and 5.22).
+
+[FAIL] 3.15 Ensure that Docker socket file ownership is set to root:docker (Automated)
+[FAIL] 3.16 Ensure that the Docker socket file permissions are set to 660 or more restrictively (Automated)
+[FAIL] 3.17 Ensure that daemon.json file ownership is to root:root (Automated)
+[FAIL] 3.18 Ensure that daemon.json file permissions are set to 644 or more restrictive (Automated)
+[FAIL] 4.5 Ensure Content trust for Docker is Enabled (Automated)
+
+
+From the initial image taken some FAILURES did not exits (Like 3.15 and 3.16). When I started creating the missing files like var/run/docker.sock and /etc/docker/daemon.json two extra FAIL statements came up. So I ended up hardening 5 FAILURE POINTS
