@@ -1,0 +1,22 @@
+1. Incident reporter: Johann venter
+2Summary of what happened: 
+Three pods were created that are crypto miners on the cluster
+
+3. Summary of what was affected:
+The attacker has control control of the cluster and had the ability to release these crypto-mining containers on the cluster. Attackers are after compute resources to abuse for crypto-mining. The containers are minergate, moneropool, xmlpooldotnet
+
+4. What is the impact on a system level:
+The attacker has access to the cluster and has managed to run crypto miners on our system which is undesirable. This consumes alot of CPU. This can be viewed by clicking on the magnifying glass icon on the left-side panel. Search for "Kubernetes/Compute Resources"
+
+5. Summary of the remediation steps:
+The administrator can run the following command to destroy the pods:
+kubectl --kubeconfig kube_config_cluster.yml delete pod <pod_name> --grace-period=0 --force>
+
+Now that the pods are destroyed, we can go to the Grafana dashboard again to observer the CPU Utilization. The CPU utilization will start to fall as these pods are removed or destroyed. The
+Falco Dashboard Udacity starts to show a flat line for the crypto-mining-related alerts as they are removed.
+
+6. Summary of lessons learned:
+It is possible to use admission controllers to allow only certain images to be imported
+It will also be good to use monitoring like the grafana dashboards we use. We can setup alerts from Falco in Grafana for events like this
+We can also view that in the falco-exporter metrics pane (127.0.0.1:9376/metrics in web browser)
+that the priority for these events are high. We can update the priority level and make it higher by editing the rules
