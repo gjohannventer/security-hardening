@@ -17,3 +17,18 @@ No stress, you have tools and security incident response knowledge to respond ;)
 ### Project Instructions
 
 Follow the steps/instructions in the Udacity classroom to complete and submit the project.
+
+
+
+## Results:  
+|                 security_architecture_design                 |              suse_docker_environment_out_of_box              |
+| :----------------------------------------------------------: | :----------------------------------------------------------: |
+| ![security architecture](submissions/security_architecture_design.png) | ![docker out of box](submissions/suse_docker_environment_out_of_box.png) |
+|       suse_docker_environment_hardened 3.19, 3.22, 4.5       |                   kube_cluster_out_of_box                    |
+| ![grype_app_out_of_box](submissions/suse_docker_environment_hardened.png) | ![kube out of box](submissions/kube_cluster_out_of_box.png)  |
+|                    kube_cluster_hardened                     |                     kube_pods_screenshot                     |
+|   ![kube hardened](submissions/kube_cluster_hardened.png)    |      ![kube pods](submissions/kube_pods_screenshot.png)      |
+|                     grype_app_out_of_box                     |                     grype_app_hardended                      |
+|  ![grype out of box](submissions/grype_app_out_of_box.png)   |     ![grafana home](submissions/grype_app_hardended.png)     |
+|                    falco_alert_screenshot                    |                   falco_grafana_screenshot                   |
+|    ![falco alert](submissions/falco_alert_screenshot.png)    |  ![falco grafana](submissions/falco_grafana_screenshot.png)  |
